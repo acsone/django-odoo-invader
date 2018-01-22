@@ -1,3 +1,4 @@
+
 from setuptools import find_packages, setup
 
 setup(
@@ -32,7 +33,5 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Topic :: Security',
-        'Topic :: System :: Systems Administration :: Authentication/Directory',
     ],
 )
