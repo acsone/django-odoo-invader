@@ -38,7 +38,7 @@ class OdooApi(APIView):
         for key, value in request.META.items():
             if key.startswith('HTTP_') and key != 'HTTP_HOST':
                 headers[key[5:].replace('_', '-')] = value
-            elif key in ('CONTENT_TYPE', 'CONTENT_LENGTH'):
+            elif key in ('CONTENT_TYPE', 'CONTENT_LENGTH') and value:
                 headers[key.replace('_', '-')] = value
 
         if request.user:
