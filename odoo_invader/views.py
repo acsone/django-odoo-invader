@@ -21,7 +21,7 @@ class OdooApi(APIView):
         global _ODOO_SESSION
         if not _ODOO_SESSION:
             _ODOO_SESSION = requests.Session()
-            _ODOO_SESSION.headers['API_KEY'] = settings.ODOO_API_KEY
+            _ODOO_SESSION.headers['API-KEY'] = settings.ODOO_API_KEY
         return _ODOO_SESSION
 
     def _get_lang(self, request):
@@ -42,7 +42,7 @@ class OdooApi(APIView):
                 headers[key.replace('_', '-')] = value
 
         if request.user:
-            headers['PARTNER_EMAIL'] = request.user.email
+            headers['PARTNER-EMAIL'] = request.user.email
         lang = self._get_lang(request)
         if lang:
             headers['LANG'] = lang
