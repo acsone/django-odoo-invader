@@ -53,14 +53,20 @@ class OdooApi(APIView):
         odoo_api_url = settings.ODOO_API_URL
         if not odoo_api_url.endswith('/'):
             odoo_api_url = odoo_api_url + '/'
+        data_key = 'data'
+        if 'application/json' in request.content_type:
+            data_key = 'json'
+        kwargs = {
+            'headers': self._get_headers(request),
+            'params': request.query_params,
+            data_key: request.data
+        }
 
         service_url = urllib.parse.urljoin(odoo_api_url, service_path)
         odoo_response = session.request(
             request.method,
             service_url,
-            headers=self._get_headers(request),
-            data=request.data,
-            params=request.query_params
+            **kwargs,
         )
 
         response = HttpResponse(
