@@ -2,6 +2,7 @@
 import urllib.parse
 
 import requests
+from django.utils import translation
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import to_locale
@@ -25,9 +26,9 @@ class OdooApi(APIView):
         return _ODOO_SESSION
 
     def _get_lang(self, request):
-        if 'HTTP_ACCEPT_LANGUAGE' in request.META:
-            return to_locale(
-                request.META['HTTP_ACCEPT_LANGUAGE'].split(',')[0])
+        lang = translation.get_language_from_request(request)
+        if lang:
+            return to_locale(lang)
         return None
 
     def _get_headers(self, request):
@@ -45,7 +46,7 @@ class OdooApi(APIView):
             headers['PARTNER-EMAIL'] = request.user.email
         lang = self._get_lang(request)
         if lang:
-            headers['LANG'] = lang
+            headers['ACCEPT-LANGUAGE'] = lang
         return headers
 
     def _formward_method_to_odoo(self, request, service_path):
@@ -61,6 +62,7 @@ class OdooApi(APIView):
             'params': request.query_params,
             data_key: request.data
         }
+
 
         service_url = urllib.parse.urljoin(odoo_api_url, service_path)
         odoo_response = session.request(
