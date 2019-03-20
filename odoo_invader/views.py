@@ -60,7 +60,8 @@ class OdooApi(APIView):
         kwargs = {
             'headers': self._get_headers(request),
             'params': request.query_params,
-            data_key: request.data
+            data_key: request.data,
+            'timeout': 60,
         }
 
 
